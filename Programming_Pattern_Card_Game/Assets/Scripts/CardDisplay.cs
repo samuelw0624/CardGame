@@ -26,8 +26,5 @@ public class CardDisplay : MonoBehaviour
         {
             DescriptionText.text = card.description + " " + card.defense + " damadge";
         }
-
-
     }
-    
 }

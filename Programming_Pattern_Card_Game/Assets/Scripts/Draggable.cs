@@ -5,11 +5,13 @@ using UnityEngine.EventSystems;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public bool hasBeenPlayed;
-
+    //reference variables
     GameManager gm;
 
+    //card state variables
+    public bool hasBeenPlayed;
     public int handIndex;
+
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
@@ -18,7 +20,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         Debug.Log("OnBeginDrag");
     }
-
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log("OnDrag");
@@ -28,19 +29,16 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         Debug.Log("OnEndDrag");
         UseCard();
-        DiscardCard();
+        //DiscardCard();
     }
     public void UseCard()
     {
         if (hasBeenPlayed == false)
         {
-            transform.position += Vector3.up * 5;
             hasBeenPlayed = true;
-
+            //the card slot that it was occupying is now free
             gm.availableSlots[handIndex] = true;
             Invoke("DiscardCard", 2f);
-
-            Debug.Log("clicked");
         }
     }
     void DiscardCard()
