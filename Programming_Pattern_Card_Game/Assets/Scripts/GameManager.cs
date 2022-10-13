@@ -7,10 +7,13 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public List<GameObject> deck = new List<GameObject>();
+    public List<GameObject> discardPile = new List<GameObject>();
+    public GameObject gameCanvas;
     public Transform[] cardSlots;
     public bool[] availableSlots;
 
     public TextMeshProUGUI deckSizeCount;
+    public TextMeshProUGUI discardPileCount;
 
     public void DrawCard()
     {
@@ -22,7 +25,10 @@ public class GameManager : MonoBehaviour
             {
                 if(availableSlots[i] == true)
                 {
-                    Instantiate(randomCard, cardSlots[i].position, Quaternion.identity);
+                    GameObject cardInHand = Instantiate(randomCard, cardSlots[i].position, Quaternion.identity, gameCanvas.transform);
+                    cardInHand.SetActive(true);
+                    cardInHand.GetComponent<CardDisplay>().handIndex = i;
+
                     availableSlots[i] = false;
                     deck.Remove(randomCard);
                     return;
@@ -40,5 +46,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         deckSizeCount.text = deck.Count.ToString();
+        discardPileCount.text = discardPile.Count.ToString();
     }
 }
