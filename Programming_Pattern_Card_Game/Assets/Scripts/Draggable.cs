@@ -20,8 +20,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         Debug.Log("OnBeginDrag");
-        returnParent = this.transform.parent;
-        this.transform.SetParent(this.transform.parent.parent);
+        //returnParent = this.transform.parent;
+        //this.transform.SetParent(this.transform.parent.parent);
     }
     public void OnDrag(PointerEventData eventData)
     {
@@ -32,7 +32,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnEndDrag(PointerEventData eventData)
     {
         Debug.Log("OnEndDrag");
-        this.transform.SetParent(returnParent);
+        //this.transform.SetParent(returnParent);
         UseCard();
         //DiscardCard();
         GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -44,12 +44,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             hasBeenPlayed = true;
             //the card slot that it was occupying is now free
             gm.availableSlots[handIndex] = true;
-            //Invoke("DiscardCard", 2f);
+            Invoke("DiscardCard", 2f);
         }
     }
     public void DiscardCard()
     {
         gm.discardPile.Add(this.gameObject);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
