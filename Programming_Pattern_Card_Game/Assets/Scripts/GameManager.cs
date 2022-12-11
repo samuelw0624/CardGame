@@ -35,23 +35,28 @@ public class GameManager : MonoBehaviour
         CommandManager = GetComponentInChildren<CommandManager>();
     }
 
+    private void Start()
+    {
+        Card randomCard_m = cardPool[Random.Range(0, cardPool.Count)];
+        cardPrefab.GetComponent<CardDisplay>().card = randomCard_m;
+    }
+
     public void DrawCard()
     {
         if(cardPool.Count >= 1)
         {
             //GameObject randomCard = deck[Random.Range(0, deck.Count)];
-            Card randomCard_m = cardPool[Random.Range(0, cardPool.Count)];
+            //Card randomCard_m = cardPool[Random.Range(0, cardPool.Count)];
             for (int i = 0; i < availableSlots.Length; i++)
             {
                 if(availableSlots[i] == true)
                 {
-                    cardPrefab.GetComponent<CardDisplay>().card = randomCard_m;
+                    
                     GameObject cardInHand = Instantiate(cardPrefab, cardSlots[i].position, Quaternion.identity, gameCanvas.transform);
                     cardInHand.SetActive(true);
                     cardInHand.GetComponent<Draggable>().handIndex = i;
                     availableSlots[i] = false;
-                    cardPool.Remove(randomCard_m);
-
+                    //cardPool.Remove(randomCard_m);
                     return;
                 }
             }
