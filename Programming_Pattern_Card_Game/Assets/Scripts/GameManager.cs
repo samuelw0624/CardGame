@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI deckSizeCount;
     public TextMeshProUGUI discardPileCount;
 
+    #region Singleton
     private void Awake()
     {
         if (instance != null && instance !=this)
@@ -34,29 +35,30 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         CommandManager = GetComponentInChildren<CommandManager>();
     }
+    #endregion
 
     private void Start()
     {
-        Card randomCard_m = cardPool[Random.Range(0, cardPool.Count)];
-        cardPrefab.GetComponent<CardDisplay>().card = randomCard_m;
+        
     }
 
     public void DrawCard()
     {
+        //if the card pool still has card left
         if(cardPool.Count >= 1)
         {
-            //GameObject randomCard = deck[Random.Range(0, deck.Count)];
-            //Card randomCard_m = cardPool[Random.Range(0, cardPool.Count)];
+            //for every available card slot
             for (int i = 0; i < availableSlots.Length; i++)
             {
+                //if there is still a lot available
                 if(availableSlots[i] == true)
                 {
-                    
-                    GameObject cardInHand = Instantiate(cardPrefab, cardSlots[i].position, Quaternion.identity, gameCanvas.transform);
+                    //the slot will be occupied with a card from the card object pool
+                    GameObject cardInHand = ObjectPooler.Instance.SpawnFromPool("Card", cardSlots[i].position);
                     cardInHand.SetActive(true);
                     cardInHand.GetComponent<Draggable>().handIndex = i;
                     availableSlots[i] = false;
-                    //cardPool.Remove(randomCard_m);
+                    //cardPool.Remove(ObjectPooler.Instance.randomCard_m);
                     return;
                 }
             }
@@ -72,15 +74,18 @@ public class GameManager : MonoBehaviour
         UndoAction();
     }
 
+    //placeholder undo function
     void UndoAction()
     {
         GameObject[] discardpile_a = discardPile.ToArray();
         if (Input.GetKeyDown(KeyCode.B))
         {
+            //check for available slots
             for (int i = 0; i < availableSlots.Length; i++)
             {
                 if (availableSlots[i] == true)
                 {
+                    //instantiate the last played card again
                     GameObject cardInHand = Instantiate(discardpile_a[discardpile_a.Length-1], cardSlots[i].position, Quaternion.identity, gameCanvas.transform);
                     cardInHand.SetActive(true);
                     cardInHand.GetComponent<Draggable>().handIndex = i;

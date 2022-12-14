@@ -15,7 +15,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     private void Start()
     {
-        gm = FindObjectOfType<GameManager>();
+        gm = GameManager.instance;
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -27,7 +27,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     {
         //Debug.Log("OnDrag");
         this.transform.position = eventData.position;
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
+        //GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
     public void OnEndDrag(PointerEventData eventData)
     {
@@ -35,7 +35,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //this.transform.SetParent(returnParent);
         UseCard();
         //DiscardCard();
-        GetComponent<CanvasGroup>().blocksRaycasts = true;
+        //GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
     public void UseCard()
     {
